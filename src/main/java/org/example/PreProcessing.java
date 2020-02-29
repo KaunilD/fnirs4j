@@ -12,11 +12,15 @@ public class PreProcessing {
 
     public static double[] getAbsorbance(List<Double>data){
         double emittorCurrent = 5*10e-4;
+
         double absorbance[] = new double[data.size()];
         for (int i = 0; i < data.size(); i++){
-            if(data.get(i) != 0.0)
-                absorbance[i]/=emittorCurrent;
-                absorbance[i] = Math.log10(absorbance[i]);
+            if(data.get(i) > 0.0) {
+                absorbance[i] = data.get(i)/emittorCurrent;
+                Utils.print(absorbance[i]+" "+ data.get(i));
+                absorbance[i] = -Math.log10(absorbance[i]);
+            }
+            break;
         }
         return absorbance;
     }
@@ -44,10 +48,11 @@ public class PreProcessing {
         return filteredData;
     }
 
-    public static double[] getSlope(double x[], double y[]){
+    public static double getSlope(double x[], double y[]){
         int n = x.length;
         double m, c, sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
         for (int i = 0; i < n; i++) {
+
             sumX += x[i];
             sumY += y[i];
             sumXY += x[i] * y[i];
@@ -55,8 +60,7 @@ public class PreProcessing {
         }
         m = (n * sumXY - sumX * sumY) / (n * sumX2 - Math.pow(sumX, 2));
         c = (sumY - m * sumX) / n;
-
-        return new double[]{m, c};
+        return m;
     }
 
     public static double getMean(double data[]){

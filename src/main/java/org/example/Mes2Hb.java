@@ -21,7 +21,7 @@ public class Mes2Hb {
         return baselines;
     }
 
-    double[][] convert(double[] rMesData, double[] irMesData, double redBaseline, double irBaseline){
+    Triple[] convert(double[] rMesData, double[] irMesData, double redBaseline, double irBaseline){
         assert rMesData.length == irMesData.length;
 
 
@@ -48,33 +48,19 @@ public class Mes2Hb {
                 aIr[i] = Math.log(irBaseline/irMesData[i]);
             }
         }
+        Triple result[] = new Triple[rMesData.length];
 
-        double hbO[], hbR[], hbT[];
-        hbO = new double[rMesData.length];
-        hbR = new double[rMesData.length];
-        hbT = new double[rMesData.length];
+        double hbO, hbR, hbT, hbODenominator = oxyRed*dxyIr - oxyIr*dxyRed, hbRDenominator = dxyRed*oxyIr - dxyIr*oxyRed;
 
-        // (a_red*dxy_ir - a_ir*dxy_red)/(oxy_red*dxy_ir - oxy_ir*dxy_red)
-        if(oxyRed*dxyIr - oxyIr*dxyRed != 0){
-            hbO = Utils.constDiv(
-                Utils.vecSub(Utils.constMul(aRed, dxyIr),  Utils.constMul(aIr, dxyRed)),
-                oxyRed*dxyIr - oxyIr*dxyRed
-            );
-        }
-        // (a_red*oxy_ir - a_ir*oxy_red)/(dxy_red*oxy_ir - dxy_ir*oxy_red)
-        if(dxyRed*oxyIr - dxyIr*oxyRed != 0){
-            hbR = Utils.constDiv(
-                    Utils.vecSub(Utils.constMul(aRed, oxyIr),  Utils.constMul(aIr, oxyRed)),
-                    dxyRed*oxyIr - dxyIr*oxyRed
-            );
+        if(hbODenominator != 0 && hbRDenominator !=0){
+            for(int i = 0; i < rMesData.length; i++){
+                hbO = (aRed[i]*dxyIr - aIr[i]*dxyRed)/hbODenominator;
+                hbR = (aRed[i]*oxyIr - aIr[i]*oxyRed)/hbRDenominator;
+                hbT = hbO+hbR;
+                result[i] = new Triple(hbO, hbR, hbT);
+            }
         }
 
-        hbT = Utils.vecAdd(hbO, hbR);
-
-        double result[][] = new double[3][hbO.length];
-        result[0] = hbO;
-        result[1] = hbR;
-        result[2] = hbT;
         return result;
     }
 }

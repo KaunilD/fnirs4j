@@ -3,6 +3,12 @@ package org.example;
 public class Triple {
     public double hbO, hbR, hbT;
 
+    public Triple(double hbO, double hbR, double hbT) {
+        this.hbO = hbO;
+        this.hbR = hbR;
+        this.hbT = hbT;
+    }
+
     public double getHbO() {
         return hbO;
     }

@@ -69,6 +69,15 @@ public class Utils {
     public static double[] getSlice(double data[], int start, int end){
         assert end > start;
         double slice[] = new double[end-start];
+        for(int i = 0; i < slice.length; i++){
+            slice[i] = data[start+i];
+        }
+        return slice;
+    }
+
+    public static Triple[] getSlice(Triple data[], int start, int end){
+        assert end > start;
+        Triple slice[] = new Triple[end-start];
         for(int i = 0; i < data.length; i++){
             slice[i] = data[start+i];
         }
