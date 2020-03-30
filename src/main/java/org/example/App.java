@@ -19,6 +19,11 @@ public class App
         List<Double> red2 = data[3];
 
         double aIr1[] = PreProcessing.getAbsorbance(ir1);
+        /*
+        for(double a: aIr1){
+            Utils.print(a+"");
+        }
+        */
         double aRed1[] = PreProcessing.getAbsorbance(red1);
         double aIr2[] = PreProcessing.getAbsorbance(ir2);
         double aRed2[] = PreProcessing.getAbsorbance(red2);
@@ -126,6 +131,7 @@ public class App
                 );
                 Triple avg1H2H[] = new Triple[]{avg1H, avg2H};
                 avgFeatures[idx].add(avg1H2H);
+
             }
         }
 

@@ -11,7 +11,7 @@ import java.util.List;
 public class PreProcessing {
 
     public static double[] getAbsorbance(List<Double>data){
-        double emittorCurrent = 5*10e-4;
+        double emittorCurrent = 5*10e4;
 
         double absorbance[] = new double[data.size()];
         for (int i = 0; i < data.size(); i++){
@@ -20,7 +20,6 @@ public class PreProcessing {
                 Utils.print(absorbance[i]+" "+ data.get(i));
                 absorbance[i] = -Math.log10(absorbance[i]);
             }
-            break;
         }
         return absorbance;
     }
