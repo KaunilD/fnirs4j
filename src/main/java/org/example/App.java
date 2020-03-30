@@ -19,11 +19,6 @@ public class App
         List<Double> red2 = data[3];
 
         double aIr1[] = PreProcessing.getAbsorbance(ir1);
-        /*
-        for(double a: aIr1){
-            Utils.print(a+"");
-        }
-        */
         double aRed1[] = PreProcessing.getAbsorbance(red1);
         double aIr2[] = PreProcessing.getAbsorbance(ir2);
         double aRed2[] = PreProcessing.getAbsorbance(red2);
@@ -36,7 +31,8 @@ public class App
 
         int frameSize = 10;
         Butterworth butterworth = new Butterworth();
-        butterworth.bandPass(2, frameSize, 0.01, 1);
+        // low = 0.01 high = 1.0, center freq = (1+0.1)/2, width = (1-0.1)/2
+        butterworth.bandPass(2, frameSize, 0.505, 0.495*2);
 
         double odIr1Filtered[] = PreProcessing.butterworthBPFilter(butterworth, odIr1);
         double odRed1Filtered[] = PreProcessing.butterworthBPFilter(butterworth, odRed1);

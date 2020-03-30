@@ -1,9 +1,5 @@
 package org.example;
 
-import org.apache.commons.math3.fitting.PolynomialCurveFitter;
-import org.apache.commons.math3.fitting.WeightedObservedPoints;
-import org.nd4j.linalg.api.ndarray.INDArray;
-import org.nd4j.linalg.factory.Nd4j;
 import uk.me.berndporr.iirj.Butterworth;
 
 import java.util.List;
@@ -17,7 +13,7 @@ public class PreProcessing {
         for (int i = 0; i < data.size(); i++){
             if(data.get(i) > 0.0) {
                 absorbance[i] = data.get(i)/emittorCurrent;
-                Utils.print(absorbance[i]+" "+ data.get(i));
+                //Utils.print(absorbance[i]+" "+ data.get(i));
                 absorbance[i] = -Math.log10(absorbance[i]);
             }
         }
@@ -34,7 +30,7 @@ public class PreProcessing {
         double dpf = getDPF(age, wavelength);
         double OD[] = new double[absorbance.length];
         for (int i = 0; i < absorbance.length; i++){
-            OD[i] = absorbance[i]/dpf;
+            OD[i] = absorbance[i]/(2.0*dpf);
         }
         return OD;
     }
