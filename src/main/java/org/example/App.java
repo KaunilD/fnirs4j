@@ -11,7 +11,7 @@ public class App
     public static void main( String[] args ) {
         AbsorptionCoefficients absorptionCoefficients = new AbsorptionCoefficients();
         Mes2Hb mes2Hb = new Mes2Hb();
-        List<Double> data[] = Utils.readCSVData("/fnirs_raw_1570646110.920795.csv");
+        List<Double> data[] = Utils.readCSVData("/fnirs_raw_1570646278.761103.csv");
 
         List<Double> ir1 = data[0];
         List<Double> red1 = data[1];
@@ -23,27 +23,19 @@ public class App
         double aIr2[] = PreProcessing.getAbsorbance(ir2);
         double aRed2[] = PreProcessing.getAbsorbance(red2);
 
-        double odIr1[] = PreProcessing.getOD(aIr1, 860, 24);
-        double odRed1[] = PreProcessing.getOD(aRed1, 660, 24);
-        double odIr2[] = PreProcessing.getOD(aIr2, 860, 24);
-        double odRed2[] = PreProcessing.getOD(aRed2, 660, 24);
+        double odIr1[] = PreProcessing.getOD(aIr1, 860, 24, 2.0);
+        double odRed1[] = PreProcessing.getOD(aRed1, 660, 24, 2.0);
+        double odIr2[] = PreProcessing.getOD(aIr2, 860, 24, 2.0);
+        double odRed2[] = PreProcessing.getOD(aRed2, 660, 24, 2.0);
 
 
         int frameSize = 10;
-        Butterworth butterworth = new Butterworth();
-        // low = 0.01 high = 1.0, center freq = (1+0.1)/2, width = (1-0.1)/2
-        butterworth.bandPass(2, frameSize, 0.505, 0.495*2);
 
-        double odIr1Filtered[] = PreProcessing.butterworthBPFilter(butterworth, odIr1);
-        double odRed1Filtered[] = PreProcessing.butterworthBPFilter(butterworth, odRed1);
-        double odIr2Filtered[] = PreProcessing.butterworthBPFilter(butterworth, odIr2);
-        double odRed2Filtered[] = PreProcessing.butterworthBPFilter(butterworth, odRed2);
+        double baselines1[] = mes2Hb.getBaseline(odRed1, odIr1, 0, 100);
+        double baselines2[] = mes2Hb.getBaseline(odRed2, odIr2, 0, 100);
 
-        double baselines1[] = mes2Hb.getBaseline(odRed1Filtered, odIr1Filtered, 0, 100);
-        double baselines2[] = mes2Hb.getBaseline(odRed2Filtered, odIr2Filtered, 0, 100);
-
-        Triple CH1[] = mes2Hb.convert(odRed1Filtered, odIr1Filtered, baselines1[0], baselines1[1]);
-        Triple CH2[] = mes2Hb.convert(odRed2Filtered, odIr2Filtered, baselines2[0], baselines2[1]);
+        Triple CH1[] = mes2Hb.convert(odRed1, odIr1, baselines1[0], baselines1[1]);
+        Triple CH2[] = mes2Hb.convert(odRed2, odIr2, baselines2[0], baselines2[1]);
 
         Triple channelData[][] = new Triple[][]{CH1, CH2};
 

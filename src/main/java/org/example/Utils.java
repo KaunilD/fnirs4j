@@ -32,6 +32,19 @@ public class Utils {
         List<Integer> indices = new ArrayList<>();
 
         for(int i = 0; i < arr1.length; i++) {
+            if(arr1[i] != 0.0f) {
+                indices.add(i);
+            }
+        }
+        return indices;
+    }
+
+
+
+    public static List<Integer> findGtZero(double arr1[]) {
+        List<Integer> indices = new ArrayList<>();
+
+        for(int i = 0; i < arr1.length; i++) {
             if(arr1[i] > 0.0f) {
                 indices.add(i);
             }

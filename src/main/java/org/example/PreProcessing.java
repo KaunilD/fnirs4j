@@ -26,11 +26,11 @@ public class PreProcessing {
                 0.001245f * Math.pow(wavelength, 2) - 0.9025f * wavelength;
     }
 
-    public static double[] getOD(double absorbance[], int wavelength, int age){
+    public static double[] getOD(double absorbance[], int wavelength, int age, double distance){
         double dpf = getDPF(age, wavelength);
         double OD[] = new double[absorbance.length];
         for (int i = 0; i < absorbance.length; i++){
-            OD[i] = absorbance[i]/(2.0*dpf);
+            OD[i] = absorbance[i]/(distance*dpf);
         }
         return OD;
     }
@@ -39,6 +39,7 @@ public class PreProcessing {
         double filteredData[] = new double[data.length];
         for (int i = 0; i < data.length; i++){
             filteredData[i] = butterworth.filter(data[i]);
+            Utils.print(filteredData[i] + "");
         }
         return filteredData;
     }
@@ -59,6 +60,8 @@ public class PreProcessing {
     }
 
     public static double getMean(double data[]){
+
+        assert data.length > 0;
         double sum = 0;
         for(double value: data){
             sum+=value;

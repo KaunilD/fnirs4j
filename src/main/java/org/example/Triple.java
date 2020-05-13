@@ -32,4 +32,8 @@ public class Triple {
     public void setHbT(double hbT) {
         this.hbT = hbT;
     }
+
+    public void print(){
+        System.out.println("Triple:: " + this.hbO + " " + this.hbR  + " " + this.hbT );
+    }
 }
